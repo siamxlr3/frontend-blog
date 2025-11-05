@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
     return (
-        <div className="flex items-center justify-center p-4 bg-gray-50">
+        <div className="flex items-center justify-center p-4">
             <div
                 className="w-full max-w-7xl rounded-2xl overflow-hidden shadow-2xl bg-cover bg-center relative"
                 style={{
