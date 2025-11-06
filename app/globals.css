@@ -14,7 +14,7 @@ body {
 /* Optional: remove dark mode override */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff; /* force white */
+
     --foreground: #171717;
   }
 }

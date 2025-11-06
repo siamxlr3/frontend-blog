@@ -1,6 +1,7 @@
 import React from "react";
 import { Search, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Header = () => {
     return (
@@ -33,12 +34,14 @@ const Header = () => {
                         <ShoppingCart className="w-6 h-6 text-gray-700 cursor-pointer" />
                         <span className="absolute top-0 right-0 w-2 h-2 rounded-full"></span>
                     </div>
-                    <Button
-                        variant="outline"
-                        className="rounded-full px-6 text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer"
-                    >
-                        sign in
-                    </Button>
+                    <Link href="/login">
+                        <Button
+                            variant="outline"
+                            className="rounded-full px-6 text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer"
+                        >
+                            sign in
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </header>
