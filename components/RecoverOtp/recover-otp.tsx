@@ -1,13 +1,35 @@
 "use client"
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
+import {useRecoverOtpMutation} from "@/components/Redux/Feature/User/userAPI";
+import {useRouter, useSearchParams} from "next/navigation";
+import toast from "react-hot-toast";
+import Loader from "@/components/Loader/loader";
 
 const RecoverOtp = () => {
-    const [value, setValue] = React.useState("")
+
+    const navigate=useRouter()
+    const [recoverOtp,{isLoading}]=useRecoverOtpMutation()
+    const searchParams = useSearchParams()
+    const email=searchParams.get("email")
+
+    const [otp, setOtp] =useState("")
+
+    const handleOnSubmit=async (e: React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+        try {
+            await recoverOtp({otp,email}).unwrap()
+            toast.success("Otp verified successfully.")
+            navigate.push(`/recoverpassword?email=${email}&otp=${otp}`)
+        }catch (e){
+            toast.error("something went wrong.")
+            console.log(e)
+        }
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <Card className="w-full max-w-md bg-white shadow-lg rounded-2xl border border-gray-300">
@@ -21,44 +43,45 @@ const RecoverOtp = () => {
                 </CardHeader>
 
                 <CardContent>
-                    <div className="flex flex-col items-center gap-6 mt-4">
-                        <InputOTP
-                            maxLength={6}
-                            value={value}
-                            onChange={(value) => setValue(value)}
-                        >
-                            <InputOTPGroup>
-                                <InputOTPSlot index={0}/>
-                                <InputOTPSlot index={1}/>
-                                <InputOTPSlot index={2}/>
-                                <InputOTPSlot index={3}/>
-                                <InputOTPSlot index={4}/>
-                                <InputOTPSlot index={5}/>
-                            </InputOTPGroup>
-                        </InputOTP>
+                    <form onSubmit={handleOnSubmit}>
+                        <div className="flex flex-col items-center gap-6 mt-4">
+                            <InputOTP
+                                maxLength={6}
+                                value={otp}
+                                onChange={(value) => setOtp(value)}
+                            >
+                                <InputOTPGroup>
+                                    <InputOTPSlot index={0}/>
+                                    <InputOTPSlot index={1}/>
+                                    <InputOTPSlot index={2}/>
+                                    <InputOTPSlot index={3}/>
+                                    <InputOTPSlot index={4}/>
+                                    <InputOTPSlot index={5}/>
+                                </InputOTPGroup>
+                            </InputOTP>
 
-                        <div className="text-sm text-gray-600 text-center">
-                            Enter your one-time password below.
+                            <div className="text-sm text-gray-600 text-center">
+                                Enter your one-time password below.
+                            </div>
+
+                            {/*<Button*/}
+                            {/*    type="submit"*/}
+                            {/*    className="w-full bg-gray-900 hover:bg-gray-800 text-white cursor-pointer"*/}
+                            {/*>*/}
+                            {/*    Verify OTP*/}
+                            {/*</Button>*/}
+                            <Button
+                                type="submit"
+                                disabled={isLoading}
+                                className={`w-full text-white flex justify-center items-center gap-2 cursor-pointer
+              ${isLoading ? 'bg-gray-900' : 'bg-gray-900 hover:bg-gray-800'}
+              disabled:bg-gray-900 disabled:opacity-100`}
+                            >
+                                {isLoading ? <Loader /> : "Verify OTP"}
+                            </Button>
                         </div>
-                    </div>
+                    </form>
                 </CardContent>
-
-                <CardFooter className="flex flex-col gap-3">
-                    <Button
-                        type="submit"
-                        className="w-full bg-gray-900 hover:bg-gray-800 text-white cursor-pointer"
-                    >
-                       <Link href='/recoverpassword'>
-                           Verify OTP
-                       </Link>
-                    </Button>
-                    <div className="text-center text-sm text-gray-600">
-                        Didn’t receive the code?{" "}
-                        <Button variant="link" className="p-0 text-gray-800 font-medium hover:underline cursor-pointer">
-                            Resend
-                        </Button>
-                    </div>
-                </CardFooter>
             </Card>
         </div>
     );

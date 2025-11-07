@@ -31,7 +31,9 @@ const Header = () => {
                 <div className="flex items-center space-x-6">
                     <Search className="w-5 h-5 text-gray-600 cursor-pointer" />
                     <div className="relative">
-                        <ShoppingCart className="w-6 h-6 text-gray-700 cursor-pointer" />
+                        <Link href='/cart'>
+                            <ShoppingCart className="w-6 h-6 text-gray-700 cursor-pointer" />
+                        </Link>
                         <span className="absolute top-0 right-0 w-2 h-2 rounded-full"></span>
                     </div>
                     <Link href="/login">
@@ -39,7 +41,15 @@ const Header = () => {
                             variant="outline"
                             className="rounded-full px-6 text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer"
                         >
-                            sign in
+                           login
+                        </Button>
+                    </Link>
+                    <Link href="/signup">
+                        <Button
+                            variant="outline"
+                            className="rounded-full px-6 text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer"
+                        >
+                            sign up
                         </Button>
                     </Link>
                 </div>
